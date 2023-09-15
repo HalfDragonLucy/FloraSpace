@@ -1,4 +1,6 @@
-﻿namespace FloraSpace.Core
+﻿using FloraSpace.Logging;
+
+namespace FloraSpace.Core
 {
     /// <summary>
     /// Provides methods to delete a single file.
@@ -33,23 +35,28 @@
                     if (cancellationToken.IsCancellationRequested)
                     {
                         error = new OperationCanceledException("Deletion operation was canceled.");
+                        Log.LogMessage($"Canceled file deletion: {filePath}");
                         return;
                     }
 
                     File.Delete(filePath);
                     progress.Report(100);
+                    Log.LogMessage($"Deleted file: {filePath}");
                 }
                 catch (UnauthorizedAccessException ex)
                 {
                     error = ex;
+                    Log.LogMessage($"Error deleting file due to unauthorized access: {filePath}", LogLevel.ERROR);
                 }
                 catch (IOException ex)
                 {
                     error = ex;
+                    Log.LogMessage($"Error deleting file due to I/O exception: {filePath}", LogLevel.ERROR);
                 }
                 catch (Exception ex)
                 {
                     error = ex;
+                    Log.LogMessage($"Error deleting file: {filePath}, Error: {ex.Message}", LogLevel.ERROR);
                 }
             }, cancellationToken);
 

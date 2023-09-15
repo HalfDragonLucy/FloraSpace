@@ -1,4 +1,6 @@
-﻿namespace FloraSpace.Core
+﻿using FloraSpace.Logging;
+
+namespace FloraSpace.Core
 {
     /// <summary>
     /// Provides methods to delete a folder and its contents.
@@ -30,6 +32,8 @@
             {
                 try
                 {
+                    Log.LogMessage($"Deleting folder: {folderPath}");
+
                     string[] files = Directory.GetFiles(folderPath, "*", SearchOption.AllDirectories);
                     int totalFiles = files.Length;
                     int filesDeleted = 0;
@@ -44,22 +48,29 @@
 
                         try
                         {
+                            Log.LogMessage($"Deleting file: {filePath}");
+
                             File.Delete(filePath);
                             filesDeleted++;
 
                             int percentComplete = (int)((double)filesDeleted / totalFiles * 100);
                             progress.Report(percentComplete);
+
+                            Log.LogMessage($"Deleted file: {filePath}");
                         }
                         catch (UnauthorizedAccessException ex)
                         {
+                            Log.LogMessage($"Error deleting file: {filePath}, Error: {ex.Message}", LogLevel.ERROR);
                             error = ex;
                         }
                         catch (IOException ex)
                         {
+                            Log.LogMessage($"Error deleting file: {filePath}, Error: {ex.Message}", LogLevel.ERROR);
                             error = ex;
                         }
                         catch (Exception ex)
                         {
+                            Log.LogMessage($"Error deleting file: {filePath}, Error: {ex.Message}", LogLevel.ERROR);
                             error = ex;
                         }
                     }
@@ -67,18 +78,22 @@
                     if (!cancellationToken.IsCancellationRequested)
                     {
                         Directory.Delete(folderPath, true);
+                        Log.LogMessage($"Deleted folder: {folderPath}");
                     }
                 }
                 catch (UnauthorizedAccessException ex)
                 {
+                    Log.LogMessage($"Error deleting folder: {folderPath}, Error: {ex.Message}", LogLevel.ERROR);
                     error = ex;
                 }
                 catch (IOException ex)
                 {
+                    Log.LogMessage($"Error deleting folder: {folderPath}, Error: {ex.Message}", LogLevel.ERROR);
                     error = ex;
                 }
                 catch (Exception ex)
                 {
+                    Log.LogMessage($"Error deleting folder: {folderPath}, Error: {ex.Message}", LogLevel.ERROR);
                     error = ex;
                 }
             }, cancellationToken);

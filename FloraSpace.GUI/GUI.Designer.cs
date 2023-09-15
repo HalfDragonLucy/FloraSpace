@@ -58,8 +58,9 @@
             BtnTempFiles.AutoEllipsis = true;
             BtnTempFiles.BackgroundImageLayout = ImageLayout.None;
             BtnTempFiles.Cursor = Cursors.Hand;
-            BtnTempFiles.FlatAppearance.BorderColor = Color.Black;
+            BtnTempFiles.FlatAppearance.BorderColor = SystemColors.ControlDark;
             BtnTempFiles.FlatStyle = FlatStyle.Flat;
+            BtnTempFiles.ForeColor = SystemColors.ControlText;
             BtnTempFiles.Location = new Point(3, 3);
             BtnTempFiles.Name = "BtnTempFiles";
             BtnTempFiles.Size = new Size(149, 37);
@@ -114,6 +115,7 @@
             BtnUpdateProgram.Name = "BtnUpdateProgram";
             BtnUpdateProgram.Size = new Size(16, 17);
             BtnUpdateProgram.ToolTipText = "Click this button to upgrade to the latest version of this program. (requires internet)";
+            BtnUpdateProgram.Visible = false;
             BtnUpdateProgram.Click += BtnUpdateProgram_Click;
             // 
             // GUI
